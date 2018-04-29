@@ -1,5 +1,6 @@
 package de.algo;
 
+
 public class Main {	
 	/* START OF TESTING */
 	public static int[] emptyArray     = {};  // empty
@@ -110,22 +111,37 @@ public class Main {
      * @return
      */
     public static int interpolationSearch(int[] array, int key) {
-    	int low = 0;
-    	int high = array.length - 1;
-    	while (array[low] <= key && array[high] >= key && low != high) {
-    		int middle = ((key - array[low]) * (high - low)) / (array[high] - array[low]) + low;
-    		if(middle < 0) {
-    			middle = 0;
+    	if (isTrivial(array)) {
+    		if (array.length == 0) return -1; // brake if empty arr
+        	if (array.length == 1) {
+        		if (key == array[0]) {
+    				return 0;
+    			}
+        	} else {
+    			return -1;
     		}
-    		if (key == array[middle]) {
-    			return middle;
-    		} else if (key < array[middle]) {
-				high = middle - 1;
-			} else if (key > array[middle]) {
-				low = middle + 1;
+		} else {
+	    	int low = 0;
+	    	int high = array.length - 1;
+	    	while (array[low] != array[high] && array[low] <= key && array[high] >= key) {
+	    		final int middle = (((key - array[low]) * (high - low)) / (array[high] - array[low])) + low;
+	    		if (key < array[middle]) {
+					high = middle - 1;
+				} else if (key > array[middle]) {
+					low = middle + 1;
+				} else {
+	    			return middle;
+	    		}
 			}
+	    	if(array[low] == key) {
+	    		return low;
+	    	}
 		}
     	return -1;
+    }
+    
+    public static boolean isTrivial(int[] array) {
+    	return array.length < 2;
     }
 }
 
